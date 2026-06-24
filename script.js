@@ -5,15 +5,15 @@ let gameInterval;
 const photos = [
   {
     src: "assets/foto1.jpg",
-    caption: "Ini salah satu momen yang aku suka."
+    caption: "nemenin kamu jualan di cfd."
   },
   {
     src: "assets/foto2.jpg",
-    caption: "Setiap lihat foto ini, aku senyum sendiri."
+    caption: "pilih aku apa mykonos?!"
   },
   {
     src: "assets/foto3.jpg",
-    caption: "Makasih ya udah jadi orang yang berarti buat aku."
+    caption: "aku ternyata selalu ditemenin kamu, yaa!"
   }
 ];
 
@@ -77,6 +77,19 @@ function toggleMusic() {
     if (status) status.innerText = "Lagu dijeda";
     if (musicBtn) musicBtn.innerText = "🎵";
   }
+}
+
+function playClickSound() {
+  const clickSound = document.getElementById("clickSound");
+
+  if (!clickSound) return;
+
+  const sound = clickSound.cloneNode(true);
+  sound.volume = 0.9;
+
+  sound.play().catch(function() {
+    console.log("Suara tring belum bisa diputar.");
+  });
 }
 
 function nextScreen(screenId) {
@@ -150,6 +163,8 @@ function createLove() {
   love.style.animationDuration = randomDuration + "s";
 
   love.onclick = function() {
+    playClickSound();
+
     score++;
 
     const scoreText = document.getElementById("score");

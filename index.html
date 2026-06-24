@@ -3,53 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Love Quest</title>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <audio id="bgMusic" loop>
-    <source src="assets/lagu.mp3" type="audio/mpeg">
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/lagu.mp3" type="audio/mpeg" />
   </audio>
+
+  <button id="musicBtn" class="music-float" onclick="toggleMusic()">
+    🎵
+  </button>
 
   <div class="app">
 
-    <!-- HALAMAN 1: OPENING -->
     <section class="screen active" id="opening">
       <div class="card">
         <div class="heart-big">💗</div>
+
         <h1>Hai Sayang</h1>
+
         <p>
-          Aku punya sesuatu kecil buat kamu.  
+          Aku punya sesuatu kecil buat kamu.
           Tapi sebelum itu, kamu harus ikutin perjalanan ini dulu ya.
         </p>
+
         <button onclick="startJourney()">Mulai Perjalanan</button>
       </div>
     </section>
 
-    <!-- HALAMAN 2: MUSIK -->
     <section class="screen" id="musicPage">
       <div class="card">
         <h2>Lagu Kita 🎶</h2>
+
         <p>
           Lagu ini selalu ngingetin aku sama kamu.
-          Jadi, dengerin sebentar ya.
+          Kalau lagunya belum bunyi, pencet tombol musiknya ya.
         </p>
+
         <div class="music-box">
           <span>Now Playing</span>
           <strong>Lagu Favorit Kita</strong>
+          <p id="musicStatus" class="music-status">
+            Klik tombol 🎵 untuk memutar lagu
+          </p>
         </div>
+
+        <button onclick="toggleMusic()">Putar / Pause Lagu</button>
         <button onclick="nextScreen('galleryPage')">Lanjut</button>
       </div>
     </section>
 
-    <!-- HALAMAN 3: GALERI FOTO -->
     <section class="screen" id="galleryPage">
       <div class="card">
         <h2>Our Memories 📸</h2>
 
         <div class="photo-frame">
-          <img id="memoryPhoto" src="assets/foto1.jpg" alt="Foto Kenangan">
+          <img id="memoryPhoto" src="assets/foto1.jpg" alt="Foto Kenangan" />
         </div>
 
         <p id="caption">
@@ -57,11 +70,12 @@
         </p>
 
         <button onclick="nextPhoto()">Foto Berikutnya</button>
-        <button class="secondary" onclick="nextScreen('gamePage')">Lanjut ke Game</button>
+        <button class="secondary" onclick="nextScreen('gamePage')">
+          Lanjut ke Game
+        </button>
       </div>
     </section>
 
-    <!-- HALAMAN 4: GAME -->
     <section class="screen" id="gamePage">
       <div class="game-header">
         <h2>Catch The Love 💘</h2>
@@ -72,23 +86,26 @@
       <div id="gameArea"></div>
     </section>
 
-    <!-- HALAMAN 5: SURAT -->
     <section class="screen" id="letterPage">
-      <div class="card">
+      <div class="card letter-card">
         <h2>Untuk Kamu 💌</h2>
+
         <p id="loveLetter"></p>
+
         <button onclick="showEnding()">Selesai Baca</button>
       </div>
     </section>
 
-    <!-- HALAMAN 6: ENDING -->
     <section class="screen" id="endingPage">
       <div class="card">
         <div class="heart-big">💞</div>
+
         <h1>Aku Sayang Kamu</h1>
+
         <p>
           Makasih udah jadi bagian paling indah dalam hari-hariku.
         </p>
+
         <button onclick="alert('Aku lebih sayang kamu 😤💗')">
           Aku sayang kamu juga
         </button>

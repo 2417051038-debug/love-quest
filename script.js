@@ -31,19 +31,79 @@ Semoga kita bisa terus sama-sama, saling ngerti, saling jaga, dan saling pulang.
 Aku sayang kamu, lebih dari yang bisa aku tulis di sini.`;
 
 function startJourney() {
-  const music = document.getElementById("bgMusic");
-  music.play();
+  playMusic();
   nextScreen("musicPage");
+}
+
+function playMusic() {
+  const music = document.getElementById("bgMusic");
+  const status = document.getElementById("musicStatus");
+  const musicBtn = document.getElementById("musicBtn");
+
+  if (!music) return;
+
+  music.volume = 0.7;
+
+  music.play()
+    .then(function() {
+      if (status) status.innerText = "Lagu sedang diputar 💗";
+      if (musicBtn) musicBtn.innerText = "⏸️";
+    })
+    .catch(function() {
+      if (status) status.innerText = "Klik tombol 🎵 untuk memutar lagu";
+      if (musicBtn) musicBtn.innerText = "🎵";
+    });
+}
+
+function toggleMusic() {
+  const music = document.getElementById("bgMusic");
+  const status = document.getElementById("musicStatus");
+  const musicBtn = document.getElementById("musicBtn");
+
+  if (!music) return;
+
+  if (music.paused) {
+    music.play()
+      .then(function() {
+        if (status) status.innerText = "Lagu sedang diputar 💗";
+        if (musicBtn) musicBtn.innerText = "⏸️";
+      })
+      .catch(function() {
+        if (status) status.innerText = "Lagunya belum bisa diputar. Cek file assets/lagu.mp3";
+        if (musicBtn) musicBtn.innerText = "🎵";
+      });
+  } else {
+    music.pause();
+    if (status) status.innerText = "Lagu dijeda";
+    if (musicBtn) musicBtn.innerText = "🎵";
+  }
 }
 
 function nextScreen(screenId) {
   const screens = document.querySelectorAll(".screen");
-  screens.forEach(screen => screen.classList.remove("active"));
 
-  document.getElementById(screenId).classList.add("active");
+  screens.forEach(function(screen) {
+    screen.classList.remove("active");
+  });
+
+  const targetScreen = document.getElementById(screenId);
+
+  if (!targetScreen) return;
+
+  targetScreen.classList.add("active");
+
+  if (screenId === "galleryPage") {
+    playMusic();
+  }
 
   if (screenId === "gamePage") {
+    playMusic();
     startGame();
+  }
+
+  if (screenId === "letterPage") {
+    playMusic();
+    showLetter();
   }
 }
 
@@ -54,14 +114,25 @@ function nextPhoto() {
     currentPhoto = 0;
   }
 
-  document.getElementById("memoryPhoto").src = photos[currentPhoto].src;
-  document.getElementById("caption").innerText = photos[currentPhoto].caption;
+  const memoryPhoto = document.getElementById("memoryPhoto");
+  const caption = document.getElementById("caption");
+
+  memoryPhoto.src = photos[currentPhoto].src;
+  caption.innerText = photos[currentPhoto].caption;
+
+  playMusic();
 }
 
 function startGame() {
   score = 0;
-  document.getElementById("score").innerText = score;
 
+  const scoreText = document.getElementById("score");
+  const gameArea = document.getElementById("gameArea");
+
+  scoreText.innerText = score;
+  gameArea.innerHTML = "";
+
+  clearInterval(gameInterval);
   gameInterval = setInterval(createLove, 700);
 }
 
@@ -78,9 +149,12 @@ function createLove() {
   love.style.left = randomX + "%";
   love.style.animationDuration = randomDuration + "s";
 
-  love.onclick = function () {
+  love.onclick = function() {
     score++;
-    document.getElementById("score").innerText = score;
+
+    const scoreText = document.getElementById("score");
+    scoreText.innerText = score;
+
     love.remove();
 
     if (score >= 20) {
@@ -90,8 +164,10 @@ function createLove() {
 
   gameArea.appendChild(love);
 
-  setTimeout(() => {
-    love.remove();
+  setTimeout(function() {
+    if (love.parentNode) {
+      love.remove();
+    }
   }, randomDuration * 1000);
 }
 
@@ -102,25 +178,15 @@ function winGame() {
   gameArea.innerHTML = "";
 
   nextScreen("letterPage");
-  typeLetter();
 }
 
-function typeLetter() {
+function showLetter() {
   const letter = document.getElementById("loveLetter");
-  letter.innerText = "";
 
-  let index = 0;
-
-  const typing = setInterval(() => {
-    letter.innerText += letterText.charAt(index);
-    index++;
-
-    if (index >= letterText.length) {
-      clearInterval(typing);
-    }
-  }, 35);
+  letter.innerText = letterText;
 }
 
 function showEnding() {
+  playMusic();
   nextScreen("endingPage");
 }
